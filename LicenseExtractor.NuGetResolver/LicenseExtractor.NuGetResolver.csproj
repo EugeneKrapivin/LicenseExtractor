@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LicenseExtractor.Interfaces\LicenseExtractor.Interfaces.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.Models\LicenseExtractor.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Client" Version="4.2.0" />
+  </ItemGroup>
+</Project>

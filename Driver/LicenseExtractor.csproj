@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <LangVersion>Latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <ProjectReference Include="..\LicenseExtractor.Interfaces\LicenseExtractor.Interfaces.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.Models\LicenseExtractor.Models.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.NuGetResolver\LicenseExtractor.NuGetResolver.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.PacketResolver\LicenseExtractor.PacketResolver.csproj" />
+  </ItemGroup>
+</Project>
