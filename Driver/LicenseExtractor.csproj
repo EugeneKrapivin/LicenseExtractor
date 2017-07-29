@@ -5,11 +5,12 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Castle.Windsor" Version="4.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
     <ProjectReference Include="..\LicenseExtractor.Interfaces\LicenseExtractor.Interfaces.csproj" />
     <ProjectReference Include="..\LicenseExtractor.Models\LicenseExtractor.Models.csproj" />
     <ProjectReference Include="..\LicenseExtractor.NuGetResolver\LicenseExtractor.NuGetResolver.csproj" />
-    <ProjectReference Include="..\LicenseExtractor.PacketResolver\LicenseExtractor.PacketResolver.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.PaketResolver\LicenseExtractor.PaketResolver.csproj" />
   </ItemGroup>
 </Project>

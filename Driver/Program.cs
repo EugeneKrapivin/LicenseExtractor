@@ -12,7 +12,8 @@ namespace LicenseExtractor
             var packages = await fetcher.FetchPackagesAsync("packages.config");
             var resolver = new NugetDependencyResolver();
             var res = await resolver.FetchMultipleAsync(packages);
-
+            
+            System.Console.WriteLine(string.Join("\r\n", res.Select(r => r.License.ToString()).Distinct()));
         }
     }
 }

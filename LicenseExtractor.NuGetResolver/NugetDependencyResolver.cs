@@ -41,7 +41,7 @@ namespace LicenseExtractor.NuGetResolver
             {
                 Name = searchMetadata.Identity.Id,
                 Version = searchMetadata.Identity.Version.ToString(),
-                Owners = searchMetadata.Owners.Split(',').Select(x => new Maintainer{Name = x}),
+                Owners = searchMetadata.Owners?.Split(',').Select(x => new Maintainer{Name = x}),
                 License = searchMetadata.LicenseUrl,
                 PackageSite = searchMetadata.ProjectUrl
             };
