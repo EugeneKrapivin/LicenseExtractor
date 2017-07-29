@@ -12,7 +12,7 @@ namespace LicenseExtractor.NuGetResolver
 {
     public class NugetDependencyFetcher : IDependencyFetcher
     {
-        public Task<IEnumerable<Package>> FetchPackagesAsync(string path)
+        public Task<IEnumerable<(string packageName, string version)>> FetchPackagesAsync(string path)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path)) throw new ArgumentException($"File {path} doesn't exist.");
@@ -23,11 +23,7 @@ namespace LicenseExtractor.NuGetResolver
 
             var packages = document.Element("packages")
                 .Elements()
-                .Select(x => new Package
-                {
-                    Name = x.Attribute("id").Value, 
-                    Version = x.Attribute("version").Value
-                });
+                .Select(x => (packageName: x.Attribute("id").Value, version: x.Attribute("version").Value));
 
             return Task.FromResult(packages);
         }

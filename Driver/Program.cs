@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using LicenseExtractor.NuGetResolver;
 
 namespace LicenseExtractor
@@ -7,8 +8,11 @@ namespace LicenseExtractor
     {
         static async Task Main(string[] args)
         {
-            var resolver = new NugetDependencyFetcher();
-            await resolver.FetchPackagesAsync("packages.config");
+            var fetcher = new NugetDependencyFetcher();
+            var packages = await fetcher.FetchPackagesAsync("packages.config");
+            var resolver = new NugetDependencyResolver();
+            var res = await resolver.FetchMultipleAsync(packages);
+
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using LicenseExtractor.Interfaces;
 
-namespace LicenseExtractor.NuGetResolverStrategy
+namespace LicenseExtractor.NuGetResolver
 {
     public class NugetResolverFactory : IResolverStrategy
     {
