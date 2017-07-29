@@ -37,7 +37,14 @@ namespace LicenseExtractor.NuGetResolver
                 logger,
                 CancellationToken.None);
 
-            return new Package();
+            return new Package
+            {
+                Name = searchMetadata.Identity.Id,
+                Version = searchMetadata.Identity.Version.ToString(),
+                Owners = searchMetadata.Owners.Split(',').Select(x => new Maintainer{Name = x}),
+                License = searchMetadata.LicenseUrl,
+                PackageSite = searchMetadata.ProjectUrl
+            };
         }
 
 //  TODO: WTF should I do with this?

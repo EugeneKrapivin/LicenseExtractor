@@ -7,8 +7,8 @@ namespace LicenseExtractor.Models
     {
         public string Name { get; set; }
         public string Version { get; set; }
-        public IEnumerable<Maintainer> Owner { get; set; }
+        public IEnumerable<Maintainer> Owners { get; set; }
         public Uri PackageSite { get; set; }
-        public string License { get; set; }
+        public Uri License { get; set; }
     }
 }
