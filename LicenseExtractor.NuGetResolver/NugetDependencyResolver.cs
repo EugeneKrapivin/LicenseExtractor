@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -15,39 +16,56 @@ namespace LicenseExtractor.NuGetResolver
 {
     public class NugetDependencyResolver : IDependencyResolver
     {
+        public static ConcurrentDictionary<string,Package> cache = new ConcurrentDictionary<string,Package>();
+
         public async Task<IEnumerable<Package>> FetchMultipleAsync(IEnumerable<(string packageName, string version)> packageNames)
         {
             var requests = packageNames.Select(x => FetchAsync(x));
             await Task.WhenAll(requests);
 
-            return requests.Select(x => x.Result);
+            return requests.Where(x => x.Result != null).Select(x => x.Result);
         }
 
         public async Task<Package> FetchAsync((string packageName, string version) packageInfo)
         {
             var logger = new NugetNullLogger();
+            if (cache.TryGetValue(packageInfo.packageName, out var package))
+            {
+                logger.LogInformation($"hit {packageInfo.packageName}");
+                return package;
+            }
+            else
+            {
+                logger.LogInformation($"missed {packageInfo.packageName}");
+            }
             var providers = new List<Lazy<INuGetResourceProvider>>();
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
-            var packageSource = new PackageSource("https://api.nuget.org/v3/index.json");
-            var sourceRepository = new SourceRepository(packageSource, providers);
+                    
+            var sourceRepository = new SourceRepository(new PackageSource("https://api.nuget.org/v3/index.json"), providers);
             var packageMetadataResource = 
             await sourceRepository.GetResourceAsync<PackageMetadataResource>();
             var searchMetadata = await packageMetadataResource.GetMetadataAsync(
                 new PackageIdentity(packageInfo.packageName, new NuGetVersion(packageInfo.version)),
                 logger,
                 CancellationToken.None);
-
-            return new Package
+            
+            if (searchMetadata == null) {
+                cache.TryAdd(packageInfo.packageName, null);
+                return null;
+            }
+            package = new Package
             {
                 Name = searchMetadata.Identity.Id,
                 Version = searchMetadata.Identity.Version.ToString(),
-                Owners = searchMetadata.Owners?.Split(',').Select(x => new Maintainer{Name = x}),
+                Authors = searchMetadata.Authors?.Split(','),
                 License = searchMetadata.LicenseUrl,
                 PackageSite = searchMetadata.ProjectUrl
             };
+            cache.TryAdd(packageInfo.packageName, package);
+
+            return package;
         }
 
-//  TODO: WTF should I do with this?
         public class NugetNullLogger : NuGet.Common.ILogger
         {
             public void LogDebug(string data) => System.Console.WriteLine($"DEBUG: {data}");
@@ -58,15 +76,10 @@ namespace LicenseExtractor.NuGetResolver
             public void LogError(string data) => System.Console.WriteLine($"ERROR: {data}");
             public void LogSummary(string data) => System.Console.WriteLine($"SUMMARY: {data}");
 
-            public void LogInformationSummary(string data)
-            {
-                throw new NotImplementedException();
-            }
+            public void LogInformationSummary(string data) => throw new NotImplementedException();
+            
 
-            public void LogErrorSummary(string data)
-            {
-                throw new NotImplementedException();
-            }
+            public void LogErrorSummary(string data) => throw new NotImplementedException();
         }
     }
 }

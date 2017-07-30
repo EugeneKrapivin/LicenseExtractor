@@ -1,7 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\LicenseExtractor.Interfaces\LicenseExtractor.Interfaces.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.Models\LicenseExtractor.Models.csproj" />
+    <ProjectReference Include="..\LicenseExtractor.NuGetResolver\LicenseExtractor.NuGetResolver.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.2.2" />
+    <PackageReference Include="Paket.Core" Version="5.83.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+  </ItemGroup>
 </Project>

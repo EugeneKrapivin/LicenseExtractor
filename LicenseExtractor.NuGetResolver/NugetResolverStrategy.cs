@@ -3,16 +3,9 @@ using LicenseExtractor.Interfaces;
 
 namespace LicenseExtractor.NuGetResolver
 {
-    public class NugetResolverFactory : IResolverStrategy
+    public class NugetResolverStrategy : IResolverStrategy
     {
-        public IDependencyFetcher GetFetcher()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDependencyResolver GetResolver()
-        {
-            throw new NotImplementedException();
-        }
+        public IDependencyFetcher GetFetcher() => new NugetDependencyFetcher();
+        public IDependencyResolver GetResolver() => new NugetDependencyResolver();
     }
 }

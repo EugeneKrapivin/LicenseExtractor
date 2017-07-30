@@ -6,6 +6,6 @@ namespace LicenseExtractor.Interfaces
 {
     public interface IDependencyFetcher
     {
-        Task<IEnumerable<(string packageName, string version)>> FetchPackagesAsync(string path);
+        ValueTask<IEnumerable<(string packageName, string version)>> FetchPackagesAsync(string path);
     }
 }
