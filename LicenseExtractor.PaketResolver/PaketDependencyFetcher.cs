@@ -15,10 +15,10 @@ namespace LicenseExtractor.PaketResolver
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path)) throw new ArgumentException($"File {path} doesn't exist.");
 
-            var lf = LockFile.LoadFrom(path);
+            var lf = DependenciesFile.ReadFromFile(path);
             
             return new ValueTask<IEnumerable<(string packageName, string version)>>
-                (lf.InstalledPackages.Select(x => (packageName: x.Item2.Name, version: x.Item3.ToString())));
+                (lf.GetDependenciesInGroup(lf.Groups.First().Key).Select(x => (packageName: x.Key.ToString(), version: x.Value.ToString())));
         }
     }
 }

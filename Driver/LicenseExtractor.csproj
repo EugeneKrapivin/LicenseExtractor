@@ -3,13 +3,15 @@
     <LangVersion>Latest</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RuntimeIdentifiers>win10-x64;win8-x64;win81-x64;win7-x64</RuntimeIdentifiers>
+    <!-- <RuntimeIdentifiers>win10-x64;win8-x64;win81-x64;win7-x64</RuntimeIdentifiers> -->
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="4.0.0" />
     <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\LicenseExtractor.Interfaces\LicenseExtractor.Interfaces.csproj" />
     <ProjectReference Include="..\LicenseExtractor.Models\LicenseExtractor.Models.csproj" />
     <ProjectReference Include="..\LicenseExtractor.NuGetResolver\LicenseExtractor.NuGetResolver.csproj" />

@@ -42,24 +42,21 @@ namespace LicenseExtractor.NuGetResolver
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
                     
             var sourceRepository = new SourceRepository(new PackageSource("https://api.nuget.org/v3/index.json"), providers);
-            var packageMetadataResource = 
-            await sourceRepository.GetResourceAsync<PackageMetadataResource>();
-            var searchMetadata = await packageMetadataResource.GetMetadataAsync(
-                new PackageIdentity(packageInfo.packageName, new NuGetVersion(packageInfo.version)),
-                logger,
-                CancellationToken.None);
+            var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>();
+            var searchMetadata = await searchResource.SearchAsync(packageInfo.packageName, new SearchFilter(true), 0, 10, logger, CancellationToken.None);
             
-            if (searchMetadata == null) {
+            if (!searchMetadata?.Any() ?? false) {
                 cache.TryAdd(packageInfo.packageName, null);
                 return null;
             }
+var res = searchMetadata.First();
             package = new Package
             {
-                Name = searchMetadata.Identity.Id,
-                Version = searchMetadata.Identity.Version.ToString(),
-                Authors = searchMetadata.Authors?.Split(','),
-                License = searchMetadata.LicenseUrl,
-                PackageSite = searchMetadata.ProjectUrl
+                Name = res.Identity.Id,
+                Version = res.Identity.Version.ToString(),
+                Authors = res.Authors?.Split(','),
+                License = res.LicenseUrl,
+                PackageSite = res.ProjectUrl
             };
             cache.TryAdd(packageInfo.packageName, package);
 
